@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import "./style.css";
-//import { fetchData } from "./actions";
 import { isLoadingApi, loadData, isError } from "./reducers";
-function App({  data, isLoading, records, loadDdata }) {
+function App({ data, isLoading, records }) {
   useEffect(() => {
-    if (!records.length) {
     data();
-    }
-  });
+  }, []);
   return (
     <div>
       <h1>Hello StackBlitz!</h1>
@@ -33,7 +30,7 @@ const mapStateToProps = state => {
  */
 const mapDispatch = dispatch => {
   return {
-    data: () => dispatch(isLoadingApi())
+    data: () => dispatch(isLoadingApi(true))
   };
 };
 export default connect(
