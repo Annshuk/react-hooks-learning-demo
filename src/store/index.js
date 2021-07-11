@@ -1,27 +1,28 @@
 import {
-  configureStore,
   applyMiddleware,
   getDefaultMiddleware,
-  createStore
-} from "@reduxjs/toolkit";
-import createSagaMiddleware from "redux-saga";
-import reducer from "../reducers";
-import rootSaga from "../reducers/sagas";
-/*
-const sagaMiddleware = createSagaMiddleware();
-const store = configureStore({  
-  reducer: createAppSlice,
-  middlewares: [...getDefaultMiddleware(), applyMiddleware(sagaMiddleware)]
-});
-*/
-const sagaMiddleware = createSagaMiddleware()
-// mount it on the Store
-const store = createStore(
-  reducer,
-  applyMiddleware(sagaMiddleware)
-)
+  configureStore
+} from '@reduxjs/toolkit';
+import createSagaMiddleware from 'redux-saga';
 
-// then run the saga
-sagaMiddleware.run(rootSaga)
+import rootReducer from '../reducers';
+import rootSaga from '../reducers/sagas';
 
-export default store;
+const configureAppStore = (initialState = {}) => {
+  const sagaMiddleware = createSagaMiddleware();
+
+  console.log(rootReducer);
+
+  const store = configureStore({
+    reducer: rootReducer,
+    middlewares: [...getDefaultMiddleware(), applyMiddleware(sagaMiddleware)],
+    preloadedState: initialState
+  });
+
+  // then run the saga
+  sagaMiddleware.run(rootSaga);
+
+  return store;
+};
+
+export default configureAppStore;
